@@ -15,7 +15,11 @@ import androidx.core.app.ActivityCompat;
 import androidx.core.graphics.Insets;
 import androidx.core.view.ViewCompat;
 import androidx.core.view.WindowInsetsCompat;
+import androidx.fragment.app.Fragment;
+import androidx.fragment.app.FragmentManager;
+import androidx.fragment.app.FragmentTransaction;
 
+import com.example.finalproject.databinding.ActivityMainBinding;
 import com.google.android.gms.location.FusedLocationProviderClient;
 import com.google.android.gms.location.LocationServices;
 import com.google.android.gms.maps.CameraUpdateFactory;
@@ -27,6 +31,7 @@ import com.google.android.gms.maps.model.LatLng;
 import com.google.android.gms.maps.model.MarkerOptions;
 import com.google.android.gms.tasks.OnSuccessListener;
 import com.google.android.gms.tasks.Task;
+import com.google.android.material.bottomnavigation.BottomNavigationView;
 
 import java.io.IOException;
 import java.util.List;
@@ -38,11 +43,46 @@ public class MainActivity extends AppCompatActivity implements OnMapReadyCallbac
     FusedLocationProviderClient fusedLocationProviderClient;
     private SearchView mapSearchView;
 
+    ActivityMainBinding binding;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        EdgeToEdge.enable(this);
         setContentView(R.layout.activity_main);
+
+        //Bottom Navigation bar functionality
+        BottomNavigationView bottomNavigationView = findViewById(R.id.bottomNavigation);
+        bottomNavigationView.setOnItemSelectedListener(item -> {
+
+            Fragment selectedFragment = null;
+
+            if (item.getItemId() == R.id.home) {
+                selectedFragment = new MapsFragment();
+            } else if (item.getItemId() == R.id.analytics) {
+                selectedFragment = new AnalyticsFragment();
+            } else if (item.getItemId() == R.id.alerts) {
+                selectedFragment = new AlertsFragment();
+            } else if (item.getItemId() == R.id.profile) {
+                selectedFragment = new ProfileFragment();
+            }
+
+            if (selectedFragment != null) {
+                getSupportFragmentManager().beginTransaction()
+                        .replace(R.id.MiddleSection, selectedFragment)
+                        .commit();
+            }
+
+            return true;
+        });
+
+        // Set the initial fragment
+        if (savedInstanceState == null) {
+            getSupportFragmentManager().beginTransaction()
+                    .replace(R.id.MiddleSection, new MapsFragment())
+                    .commit();
+        }
+
+        EdgeToEdge.enable(this);
 
         mapSearchView = findViewById(R.id.mapSearch);
 
@@ -79,7 +119,14 @@ public class MainActivity extends AppCompatActivity implements OnMapReadyCallbac
         });
 
 
+    }
 
+    //For bottom navigation bar
+    private void replaceFragment(Fragment fragment){
+        FragmentManager fragmentManager = getSupportFragmentManager();
+        FragmentTransaction fragmentTransaction = fragmentManager.beginTransaction();
+        fragmentTransaction.replace(R.id.MiddleSection, Fragment.class, null);
+        fragmentTransaction.commit();
     }
 
     private void getLastLocation() {

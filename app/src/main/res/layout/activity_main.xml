@@ -1,6 +1,7 @@
 <?xml version="1.0" encoding="utf-8"?>
 <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:tools="http://schemas.android.com/tools"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
     android:id="@+id/main"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
@@ -11,17 +12,16 @@
         android:id="@+id/header"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:orientation="vertical"
+        android:layout_alignParentTop="true"
         android:background="@color/appColor"
-        android:padding="35dp"
-        android:layout_alignParentTop="true">
+        android:orientation="vertical"
+        android:padding="35dp">
 
         <LinearLayout
             android:id="@+id/linear"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:orientation="horizontal">
-
 
 
             <TextView
@@ -48,13 +48,19 @@
     </LinearLayout>
 
 
-    <!-- Map Fragment -->
-    <androidx.fragment.app.FragmentContainerView
-        android:name="com.google.android.gms.maps.SupportMapFragment"
-        android:id="@+id/map"
+    <!-- Middle Fragment -->
+    <LinearLayout
+        android:id="@+id/MiddleSection"
         android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        android:layout_below="@id/header"/>
+        android:layout_height="0dp"
+        android:layout_above="@id/footer"
+        android:layout_below="@id/header"
+        android:orientation="vertical"
+        android:layout_weight="1">
+
+
+    </LinearLayout>
+
     <LinearLayout
         android:id="@+id/footer"
         android:layout_width="match_parent"
@@ -66,9 +72,21 @@
         android:gravity="center">
 
 
-
-
+        <!-- Navigation Bar -->
+        <com.google.android.material.bottomnavigation.BottomNavigationView
+            android:id="@+id/bottomNavigation"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_alignParentBottom="true"
+            android:background="@color/mainBlue"
+            android:elevation="2dp"
+            app:itemIconSize="30dp"
+            app:itemIconTint="@color/white"
+            app:labelVisibilityMode="unlabeled"
+            app:menu="@menu/bottom_nav_menu" />
     </LinearLayout>
+
+
 
 
 </RelativeLayout>
